@@ -8,6 +8,9 @@
   --rose: #c98574;
   --line: rgba(36, 40, 34, 0.12);
   --soft-line: rgba(36, 40, 34, 0.08);
+  --glass: rgba(255, 253, 249, 0.68);
+  --glass-strong: rgba(255, 253, 249, 0.82);
+  --shadow-soft: 0 22px 60px rgba(36, 40, 34, 0.1);
   --radius: 8px;
 }
 
@@ -25,6 +28,18 @@ body {
   background: var(--paper);
   font-family: Manrope, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.65;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(201, 133, 116, 0.12), transparent 28%),
+    radial-gradient(circle at 85% 14%, rgba(115, 131, 108, 0.11), transparent 30%),
+    linear-gradient(180deg, rgba(255, 253, 249, 0.3), rgba(255, 253, 249, 0));
 }
 
 a {
@@ -46,13 +61,17 @@ img {
   gap: 24px;
   min-height: 74px;
   padding: 14px clamp(18px, 5vw, 72px);
-  background: rgba(255, 253, 249, 0.92);
+  background: rgba(255, 253, 249, 0.76);
   border-bottom: 1px solid transparent;
-  backdrop-filter: blur(18px);
+  box-shadow: none;
+  backdrop-filter: blur(18px) saturate(120%);
+  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
 .site-header.is-scrolled {
   border-color: var(--soft-line);
+  background: rgba(255, 253, 249, 0.84);
+  box-shadow: 0 14px 40px rgba(36, 40, 34, 0.06);
 }
 
 .brand {
@@ -74,6 +93,13 @@ img {
   color: var(--ink);
   font-size: 0.82rem;
   font-weight: 800;
+  transition: transform 220ms ease, background 220ms ease, color 220ms ease;
+}
+
+.brand:hover .brand-mark {
+  transform: rotate(-6deg);
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .brand strong,
@@ -104,12 +130,32 @@ img {
 }
 
 .site-nav a {
+  position: relative;
   text-decoration: none;
+}
+
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 220ms ease;
 }
 
 .site-nav a:hover,
 .site-nav a:focus {
   color: var(--ink);
+}
+
+.site-nav a:hover::after,
+.site-nav a:focus::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .nav-toggle {
@@ -137,12 +183,14 @@ img {
   font-weight: 800;
   line-height: 1.2;
   text-decoration: none;
-  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+  backdrop-filter: blur(14px) saturate(118%);
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .button:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   border-color: rgba(36, 40, 34, 0.3);
+  box-shadow: 0 14px 32px rgba(36, 40, 34, 0.1);
 }
 
 .button svg,
@@ -161,7 +209,7 @@ img {
 }
 
 .secondary {
-  background: rgba(255, 253, 249, 0.78);
+  background: var(--glass);
 }
 
 .secondary.light {
@@ -177,13 +225,16 @@ img {
   align-items: center;
   min-height: calc(100vh - 74px);
   padding: clamp(54px, 8vw, 112px) clamp(20px, 5vw, 72px);
-  background: var(--paper);
+  background:
+    linear-gradient(135deg, rgba(255, 253, 249, 0.9), rgba(247, 242, 236, 0.78)),
+    var(--paper);
 }
 
 .hero-copy {
   display: grid;
   gap: 26px;
   max-width: 810px;
+  animation: heroRise 820ms ease both;
 }
 
 .eyebrow {
@@ -244,8 +295,12 @@ h3 {
 
 .question-card {
   max-width: 670px;
-  padding: 22px 0 0;
-  border-top: 1px solid var(--line);
+  padding: 22px;
+  border: 1px solid rgba(255, 253, 249, 0.56);
+  border-radius: var(--radius);
+  background: rgba(255, 253, 249, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(120%);
 }
 
 .question-card p {
@@ -270,6 +325,8 @@ h3 {
   min-height: 620px;
   border-radius: var(--radius);
   background: var(--wash);
+  box-shadow: var(--shadow-soft);
+  animation: imageFloatIn 900ms ease 120ms both;
 }
 
 .hero-media img {
@@ -278,6 +335,12 @@ h3 {
   min-height: 620px;
   object-fit: cover;
   object-position: center 38%;
+  transform: scale(1.01);
+  transition: transform 700ms ease;
+}
+
+.hero-media:hover img {
+  transform: scale(1.045);
 }
 
 .hero-note {
@@ -290,8 +353,9 @@ h3 {
   padding: 16px;
   border: 1px solid rgba(255, 253, 249, 0.62);
   border-radius: var(--radius);
-  background: rgba(255, 253, 249, 0.86);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 253, 249, 0.68);
+  box-shadow: 0 18px 40px rgba(36, 40, 34, 0.12);
+  backdrop-filter: blur(18px) saturate(126%);
 }
 
 .hero-note strong {
@@ -400,11 +464,12 @@ h3 {
   height: 100%;
   min-height: inherit;
   object-fit: cover;
-  transition: transform 360ms ease;
+  transition: transform 520ms ease, filter 520ms ease;
 }
 
 .image-card:hover img {
-  transform: scale(1.025);
+  filter: saturate(1.04);
+  transform: scale(1.045);
 }
 
 .image-card::after {
@@ -423,6 +488,12 @@ h3 {
   display: grid;
   gap: 5px;
   color: #fff;
+  transform: translateY(0);
+  transition: transform 260ms ease;
+}
+
+.image-card:hover figcaption {
+  transform: translateY(-4px);
 }
 
 .image-card figcaption span {
@@ -461,12 +532,23 @@ h3 {
 .gain-list article {
   border: 1px solid var(--soft-line);
   border-radius: var(--radius);
-  background: rgba(255, 253, 249, 0.72);
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(118%);
 }
 
 .service-card {
   min-height: 268px;
   padding: 26px;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.service-card:hover,
+.method-grid article:hover,
+.recipe-card:hover,
+.review-card:hover {
+  border-color: rgba(36, 40, 34, 0.16);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-5px);
 }
 
 .service-card svg {
@@ -504,6 +586,7 @@ h3 {
 
 .method-grid article {
   padding: 28px;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 
 .method-grid span {
@@ -555,6 +638,7 @@ h3 {
 .recipe-card {
   min-height: 320px;
   padding: 28px;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 
 .recipe-tag {
@@ -582,8 +666,12 @@ h3 {
   gap: clamp(30px, 6vw, 82px);
   padding: clamp(34px, 6vw, 70px);
   border-radius: var(--radius);
-  background: #293029;
+  background:
+    linear-gradient(135deg, rgba(41, 48, 41, 0.94), rgba(41, 48, 41, 0.82)),
+    rgba(41, 48, 41, 0.9);
   color: var(--paper);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px) saturate(115%);
 }
 
 .consultation-panel p {
@@ -631,6 +719,7 @@ h3 {
 
 .review-card {
   padding: 28px;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 
 .featured-review {
@@ -692,10 +781,11 @@ h3 {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(36, 40, 34, 0.02), rgba(36, 40, 34, 0.46));
-  transition: transform 220ms ease;
+  transition: transform 260ms ease, opacity 260ms ease;
 }
 
 .insta-post:hover::before {
+  opacity: 0.86;
   transform: scale(1.04);
 }
 
@@ -737,7 +827,9 @@ h3 {
   padding: clamp(34px, 6vw, 70px);
   border: 1px solid var(--soft-line);
   border-radius: var(--radius);
-  background: var(--wash);
+  background: var(--glass-strong);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px) saturate(118%);
 }
 
 .contact h2 {
@@ -788,6 +880,78 @@ address a {
 .site-footer a {
   font-weight: 800;
   text-decoration: none;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-card.reveal,
+.method-grid article.reveal,
+.recipe-card.reveal,
+.review-card.reveal,
+.image-card.reveal,
+.gain-list article.reveal,
+.insta-post.reveal {
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.service-card.reveal.is-visible:hover,
+.method-grid article.reveal.is-visible:hover,
+.recipe-card.reveal.is-visible:hover,
+.review-card.reveal.is-visible:hover {
+  transform: translateY(-5px);
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes imageFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (max-width: 1120px) {
@@ -858,8 +1022,9 @@ address a {
     left: 0;
     display: none;
     padding: 16px;
-    background: rgba(255, 253, 249, 0.98);
+    background: rgba(255, 253, 249, 0.84);
     border-bottom: 1px solid var(--soft-line);
+    backdrop-filter: blur(18px) saturate(120%);
   }
 
   .site-nav.is-open {
@@ -942,7 +1107,7 @@ address a {
   }
 
   .question-card {
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: 22px;
+    padding-left: 22px;
   }
 }
