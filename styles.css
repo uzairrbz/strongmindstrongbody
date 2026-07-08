@@ -194,12 +194,22 @@ img {
 }
 
 .button svg,
+.button .social-icon,
 .service-card svg,
 .feature-list svg,
 .gain-list svg {
   width: 19px;
   height: 19px;
   stroke-width: 1.9;
+}
+
+.social-icon {
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  border-radius: 5px;
+  object-fit: cover;
 }
 
 .primary {
@@ -880,6 +890,12 @@ address a {
 .site-footer a {
   font-weight: 800;
   text-decoration: none;
+}
+
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .reveal {
