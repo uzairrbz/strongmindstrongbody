@@ -16,7 +16,6 @@ const revealTargets = document.querySelectorAll(
     ".consultation-panel",
     ".review-card",
     ".instagram",
-    ".instagram-media",
     ".contact-panel",
   ].join(",")
 );
@@ -87,3 +86,7 @@ if ("IntersectionObserver" in window) {
 } else {
   revealTargets.forEach((target) => target.classList.add("is-visible"));
 }
+
+window.addEventListener("load", () => {
+  window.instgrm?.Embeds?.process();
+});
