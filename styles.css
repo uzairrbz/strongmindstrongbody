@@ -548,8 +548,27 @@ h3 {
 
 .service-card {
   min-height: 268px;
-  padding: 26px;
+  padding: 0;
+  overflow: hidden;
   transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.service-image {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.96);
+  transition: filter 300ms ease, transform 420ms ease;
+}
+
+.service-card:hover .service-image {
+  filter: saturate(1.05);
+  transform: scale(1.035);
+}
+
+.service-content {
+  padding: 24px;
 }
 
 .service-card:hover,
@@ -568,7 +587,7 @@ h3 {
 }
 
 .service-card h3 {
-  margin-top: 34px;
+  margin-top: 28px;
 }
 
 .service-card p,
@@ -770,10 +789,26 @@ h3 {
   margin-bottom: 28px;
 }
 
-.insta-grid {
+.insta-grid,
+.instagram-embed-grid {
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr 1fr;
   gap: 12px;
+}
+
+.instagram-embed-grid {
+  grid-template-columns: repeat(4, minmax(260px, 1fr));
+  align-items: start;
+}
+
+.instagram-embed-grid .instagram-media {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden;
+  border-radius: var(--radius) !important;
+  background: var(--paper) !important;
 }
 
 .insta-post {
@@ -1001,7 +1036,8 @@ address a {
     grid-row: auto;
   }
 
-  .insta-grid {
+  .insta-grid,
+  .instagram-embed-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -1083,6 +1119,7 @@ address a {
   .review-grid,
   .image-grid,
   .insta-grid,
+  .instagram-embed-grid,
   .contact-panel {
     grid-template-columns: 1fr;
   }
@@ -1119,6 +1156,14 @@ address a {
   .method-grid article,
   .recipe-card,
   .review-card {
+    padding: 22px;
+  }
+
+  .service-card {
+    padding: 0;
+  }
+
+  .service-content {
     padding: 22px;
   }
 

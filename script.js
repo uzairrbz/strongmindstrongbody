@@ -16,6 +16,7 @@ const revealTargets = document.querySelectorAll(
     ".consultation-panel",
     ".review-card",
     ".instagram",
+    ".instagram-media",
     ".contact-panel",
   ].join(",")
 );
